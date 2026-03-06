@@ -26,7 +26,13 @@ func main() {
 
 	defer client.Stop()
 
-	resp, err := analyser.CommitAnalyzerType(promptCommits, client)
+	// resp, err := analyser.CommitAnalyzerType(promptCommits, client)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+
+	resp, err := analyser.CommitAnalyzerMessage(promptCommits, client)
 	if err != nil {
 		panic(err)
 	}
