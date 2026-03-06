@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"voyager/internal/git"
 	"voyager/internal/llm"
@@ -15,6 +14,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	
+	promptCommits := llm.PromptCommitBuilder(commits)
 
 	client := llm.NewClient()
 
@@ -25,8 +26,7 @@ func main() {
 
 	defer client.Stop()
 
-	// CLASSIFICAÇÃO DE TIPOS DE COMMITS
-	resp, err := analyser.CommitAnalyzerType(context.Background(), commits, client)
+	resp, err := analyser.CommitAnalyzerType(promptCommits, client)
 	if err != nil {
 		panic(err)
 	}

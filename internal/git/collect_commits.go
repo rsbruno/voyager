@@ -42,7 +42,6 @@ func CollectCommits(repoPath string, limit int) ([]Commit, error) {
 	count := 0
 
 	err = commitIter.ForEach(func(c *object.Commit) error {
-
 		commits = append(commits, Commit{
 			Hash:    c.Hash.String(),
 			Author:  c.Author.Name,
@@ -50,7 +49,6 @@ func CollectCommits(repoPath string, limit int) ([]Commit, error) {
 			Message: c.Message,
 			Date:    c.Author.When,
 		})
-
 		count++
 		if limit > 0 && count >= limit {
 			return ErrStop
@@ -58,7 +56,6 @@ func CollectCommits(repoPath string, limit int) ([]Commit, error) {
 
 		return nil
 	})
-
 	if err != nil && err != ErrStop {
 		return nil, err
 	}

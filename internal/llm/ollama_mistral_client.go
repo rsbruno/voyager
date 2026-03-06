@@ -5,10 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"os"
 	"os/exec"
-	"path/filepath"
-	"regexp"
 	"fmt"
 )
 
@@ -42,28 +39,10 @@ func (c *Client) Start() error {
 	return c.cmd.Start()
 }
 
-var importRegex = regexp.MustCompile(`{{import:(.*?)}}`)
 
-func LoadPrompt(name string) (string, error) {
-	fmt.Println("Carregando prompt: ", name)
+func (c *Client) Execute(prompt string) (string, error) {
+	model := "mistral"
 
-	path := filepath.Join("internal", "prompts", name)
-
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return "", fmt.Errorf("prompt não encontrado: %s", path)
-	}
-
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return "", fmt.Errorf("erro ao ler o prompt: %w", err)
-	}
-
-	fmt.Println("Prompt carregado com sucesso!")
-	return string(data), nil
-}
-
-
-func (c *Client) Prompt(ctx context.Context, model string, prompt string) (string, error) {
 	fmt.Println("Executando o modelo", model, "(Aguarde a finalização)...")
 
 	body := request{
@@ -78,7 +57,7 @@ func (c *Client) Prompt(ctx context.Context, model string, prompt string) (strin
 	}
 
 	req, err := http.NewRequestWithContext(
-		ctx,
+		context.Background(),
 		http.MethodPost,
 		c.baseURL,
 		bytes.NewBuffer(data),
@@ -105,12 +84,10 @@ func (c *Client) Prompt(ctx context.Context, model string, prompt string) (strin
 	return result.Response, nil
 }
 
-func (c *Client) Stop() error {
+func (c *Client) Stop() {
 	fmt.Println("Encerrando Ollama...")
 
 	exec.Command("ollama", "stop", "mistral").Run()
 
 	exec.Command("pkill", "-f", "ollama").Run()
-
-	return nil
 }
