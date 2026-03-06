@@ -36,9 +36,9 @@ func NewClient() *Client {
 }
 
 func (c *Client) Start() error {
-	fmt.Println("Carregando Ollama...")
-
 	c.cmd = exec.Command("ollama", "serve")
+	fmt.Println("Iniciado Ollama")
+	
 	return c.cmd.Start()
 }
 
@@ -64,7 +64,7 @@ func LoadPrompt(name string) (string, error) {
 
 
 func (c *Client) Prompt(ctx context.Context, model string, prompt string) (string, error) {
-	fmt.Println("Executando o modelo! (Aguarde a finalização)...")
+	fmt.Println("Executando o modelo", model, "(Aguarde a finalização)...")
 
 	body := request{
 		Model:  model,
