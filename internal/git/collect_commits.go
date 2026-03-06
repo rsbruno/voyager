@@ -2,6 +2,7 @@ package git
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/go-git/go-git/v5"
@@ -19,7 +20,7 @@ type Commit struct {
 var ErrStop = errors.New("stop iteration")
 
 func CollectCommits(repoPath string, limit int) ([]Commit, error) {
-
+	fmt.Println("Iniciando coleta de commits...")
 	repo, err := git.PlainOpen(repoPath)
 	if err != nil {
 		return nil, err
@@ -62,5 +63,6 @@ func CollectCommits(repoPath string, limit int) ([]Commit, error) {
 		return nil, err
 	}
 
+	fmt.Println("Encontrados: ", len(commits), "commits")
 	return commits, nil
 }
