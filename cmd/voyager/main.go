@@ -25,7 +25,7 @@ func main() {
 	commitsString := builder.String()
 
 	// CARREGAMENTO DO PROMPT CLASSIFICADOR DE TIPOS
-	prompt, err := llm.LoadPrompt("commit_analyzer.md")
+	prompt, err := llm.LoadPrompt("commit_analyzer_type.md")
 
 	if err != nil {
 		panic(err)
