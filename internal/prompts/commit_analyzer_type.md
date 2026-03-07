@@ -44,6 +44,10 @@ Property names must be in English.
 
 Values must be in Brazilian Portuguese (pt-BR).
 
+Do not translate technical terms, programming keywords, library names, framework names, API names, commit hashes, code identifiers, or English terminology commonly used in software development. Preserve them exactly as written (e.g., commit, refactor, API, client, server, JSON, HTTP, Git, Docker, Kubernetes, Go, function, struct, interface).
+
+Preserve code identifiers, variable names, and function names exactly as written.
+
 Example:
 
 {
