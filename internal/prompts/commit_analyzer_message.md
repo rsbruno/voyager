@@ -6,7 +6,7 @@ Rules
 
 - Each message must have exactly 20 words.
 - Messages must be written in the past tense.
-- Messages must **not start with "Eu"**; remove the pronoun if present.
+- Use the third person pronoun.
 - Remove any leading spaces and capitalize the first letter of the sentence.
 - Do not include commit type labels (like 'Adicionou:', 'Refatorou:'); use only the verb phrase.
 - Messages must not be generic; keep context precise.
