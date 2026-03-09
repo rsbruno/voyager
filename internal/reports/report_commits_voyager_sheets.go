@@ -8,11 +8,12 @@ import (
 
 	"voyager/internal/git"
 	"voyager/internal/infra"
+	"voyager/internal/utils"
 )
 
 
 func ReportCommitsVoyagerSheets(commits []git.Commit) error {
-	fmt.Println("Registrando os commits no Google Sheet (Voyager Sheets)")
+	fmt.Println("\nRegistrando os commits no Google Sheet (Voyager Sheets)")
 
 	grouped := git.GroupCommitsByDate(commits)
 	sheetId := "1w0jHDDU5onnzQ1RhoQoq4wkg18LsXGs8vnN_N-G68mg"
@@ -46,7 +47,7 @@ func ReportCommitsVoyagerSheets(commits []git.Commit) error {
 
 		for _, c := range commits {
 			activity = append(activity, c.Message)
-			subject = append(subject, fmt.Sprintf("[Tarefa][Nº][%s]", c.Type))
+			subject = append(subject, fmt.Sprintf("[Tarefa][Nº][%s][%s]", utils.ShortHash(c.Hash), c.Type))
 		}
 
 		err = infra.Write(

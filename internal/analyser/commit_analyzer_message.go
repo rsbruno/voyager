@@ -6,10 +6,16 @@ import (
 
 	"voyager/internal/llm"
 	"voyager/internal/utils"
+	"voyager/sdk"
 )
 
-func CommitAnalyzerMessage(commits string, client *llm.Client) (map[string]string, error) {
+func CommitAnalyzerMessage(commits string, client *llm.GeminiClient) (map[string]string, error) {
 	fmt.Println("\nIniciado a classificação de mensagens dos commits...")
+
+	data, err := sdk.Debug[map[string]string]("messages.json")
+	if data != nil {
+		return *data, err
+	}
 
 	if client == nil {
 		return nil, fmt.Errorf("Client LLM é nil")
@@ -36,6 +42,7 @@ func CommitAnalyzerMessage(commits string, client *llm.Client) (map[string]strin
 
 	parsed, err := utils.JsonParse(resp)
 	if err != nil {
+		fmt.Println(resp)
 		return nil, fmt.Errorf(
 			"Erro ao fazer parse do JSON retornado pela LLM (message): %w",
 			err,

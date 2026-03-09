@@ -6,10 +6,16 @@ import (
 
 	"voyager/internal/llm"
 	"voyager/internal/utils"
+	"voyager/sdk"
 )
 
-func CommitAnalyzerType(commits string, client *llm.Client) (map[string]string, error) {
+func CommitAnalyzerType(commits string, client *llm.GeminiClient) (map[string]string, error) {
 	fmt.Println("\nIniciado a classificação de tipos dos commits...")
+
+	data, err := sdk.Debug[map[string]string]("types.json")
+	if data != nil {
+		return *data, err
+	}
 
 	if client == nil {
 		return nil, fmt.Errorf("Client LLM é nil")
@@ -33,6 +39,7 @@ func CommitAnalyzerType(commits string, client *llm.Client) (map[string]string, 
 
 	parsed, err := utils.JsonParse(resp)
 	if err != nil {
+		fmt.Println(resp)
 		return nil, fmt.Errorf("Erro ao fazer parse do JSON retornado pela LLM: %w", err)
 	}
 

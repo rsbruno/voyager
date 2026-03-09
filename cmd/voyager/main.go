@@ -2,29 +2,38 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"time"
 	"voyager/internal/analyser"
 	"voyager/internal/git"
 	"voyager/internal/llm"
 	"voyager/internal/reports"
+
+	"github.com/joho/godotenv"
 )
 
-
 func main() {
-	gitCommits, err := git.CollectCommits(".", 10)
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Aviso: .env não encontrado")
+	}
+
+	repo := "/home/bruno-santos/Documentos/trocafone/trocafone-new-trade-in-plataform"
+
+	since := time.Date(2026, 3, 1, 0, 0, 0, 0, time.Local)
+	until := time.Now()
+
+	gitCommits, err := git.CollectCommits(repo, "rsbruno.cdc@gmail.com", since, until)
 	if err != nil {
 		panic(err)
 	}
 
-	client := llm.NewClient()
-	err = client.Start()
+	client, err := llm.NewGeminiClient()
 	if err != nil {
 		panic(err)
 	}
-	defer client.Stop()
-
 
 	commits := llm.PromptCommitBuilder(gitCommits)
-
 
 	types, err := analyser.CommitAnalyzerType(commits, client)
 	if err != nil {
@@ -37,16 +46,20 @@ func main() {
 	}
 
 	workCommits := make([]git.Commit, len(gitCommits))
+
 	for i, c := range gitCommits {
+
 		hash := c.Hash
+
 		workCommits[i] = git.Commit{
 			Hash:    hash,
 			Author:  c.Author,
 			Email:   c.Email,
 			Date:    c.Date,
-			Type:    types[hash],
 			Message: messages[hash],
+			Type: types[hash],
 		}
+
 	}
 
 	err = reports.ReportCommitsVoyagerSheets(workCommits)

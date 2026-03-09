@@ -20,38 +20,56 @@ type Commit struct {
 
 var ErrStop = errors.New("Stop commit iteration")
 
-func CollectCommits(repoPath string, limit int) ([]Commit, error) {
+func CollectCommits(
+	repoPath string,
+	authorEmail string,
+	since time.Time,
+	until time.Time,
+) ([]Commit, error) {
 
 	if repoPath == "" {
-		return nil, fmt.Errorf("RepoPath não pode ser vazio")
+		return nil, fmt.Errorf("repoPath não pode ser vazio")
 	}
 
 	fmt.Println("\nIniciando coleta de commits...")
 
 	repo, err := gogit.PlainOpen(repoPath)
 	if err != nil {
-		return nil, fmt.Errorf("Erro ao abrir repositório (%s): %w", repoPath, err)
+		return nil, fmt.Errorf("erro ao abrir repositório (%s): %w", repoPath, err)
 	}
 
 	ref, err := repo.Head()
 	if err != nil {
-		return nil, fmt.Errorf("Erro ao obter HEAD do repositório: %w", err)
+		return nil, fmt.Errorf("erro ao obter HEAD do repositório: %w", err)
 	}
 
 	commitIter, err := repo.Log(&gogit.LogOptions{
 		From: ref.Hash(),
 	})
 	if err != nil {
-		return nil, fmt.Errorf("Erro ao iniciar log de commits: %w", err)
+		return nil, fmt.Errorf("erro ao iniciar log de commits: %w", err)
 	}
 
 	var commits []Commit
-	count := 0
 
 	err = commitIter.ForEach(func(c *object.Commit) error {
 
 		if c == nil {
-			return fmt.Errorf("Commit nulo encontrado durante iteração")
+			return fmt.Errorf("commit nulo encontrado durante iteração")
+		}
+
+		if authorEmail != "" && c.Author.Email != authorEmail {
+			return nil
+		}
+
+		commitDate := c.Author.When
+
+		if !since.IsZero() && commitDate.Before(since) {
+			return nil
+		}
+
+		if !until.IsZero() && commitDate.After(until) {
+			return nil
 		}
 
 		commits = append(commits, Commit{
@@ -59,23 +77,17 @@ func CollectCommits(repoPath string, limit int) ([]Commit, error) {
 			Author:  c.Author.Name,
 			Email:   c.Author.Email,
 			Message: c.Message,
-			Date:    c.Author.When,
+			Date:    commitDate,
 		})
-
-		count++
-
-		if limit > 0 && count >= limit {
-			return ErrStop
-		}
 
 		return nil
 	})
 
-	if err != nil && !errors.Is(err, ErrStop) {
-		return nil, fmt.Errorf("Erro ao iterar commits: %w", err)
+	if err != nil {
+		return nil, fmt.Errorf("erro ao iterar commits: %w", err)
 	}
 
-	fmt.Println("Encontrados:", len(commits), "commits\n")
+	fmt.Println("Encontrados:", len(commits), "commits")
 
 	return commits, nil
 }
