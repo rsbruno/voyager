@@ -1,0 +1,15 @@
+{
+  "062d83b24d9f91f0999eb55df24c5c58be9ac0a0": "Defini o título do documento para a página de seleção de categorias visando melhorar a identificação e navegação do usuário.",
+  "22312b6cc8bc471da3f145de824fcc44baea4a24": "Removi o componente nav-user.tsx do projeto para limpar o código e eliminar elementos que não estavam sendo mais utilizados atualmente.",
+  "8c39e784b58b6fd884f4f364524319ef2ec3ff0f": "Adicionei efeito de sombra ao passar o mouse no componente de card de categorias para melhorar a experiência do usuário.",
+  "39d5824d9907fcc4d964811bc5be465bb564006d": "Refatorei as variantes de cores de tipografia com o prefixo typography- e atualizei a sintaxe de classes do Tailwind CSS.",
+  "5cc4eb17c49e0c580885cbb005e33aef843b0492": "Refatorei componentes de dropdown, introduzi novos elementos de UI e atualizei as variáveis globais de CSS para padronizar o estilo.",
+  "4de510dc39f9c27b7f6dbefa6921a6304c2e3e11": "Adicionei a rota /novo-atendimento, componentes de rodapé institucional e atualizei a hierarquia de rotas para aninhar a rota de categorias.",
+  "10c11499e653b1cf9062ce37020d8ab2fcbfa9c5": "Adicionei uma nova página de seleção de categorias, incluindo componentes dedicados de UI, novos assets e estilização visual para interface.",
+  "bc45e17b5b5f664ad82b96b4dc3753dbc5d10bee": "Implementei a internacionalização usando react-i18next, incluindo o idioma português e armazenamento local para a persistência da linguagem escolhida pelo usuário.",
+  "358bc107982d33920e503b095542088e097bb0df": "Implementei o TanStack Router para o roteamento, introduzi o contexto de autenticação e realizei a integração completa do React Query.",
+  "d363ab5efbcda48f5bd9e53e631026d3df33f92c": "Migrei o projeto para o Vite, atualizei os scripts de build e removi as dependências que não eram mais necessárias.",
+  "cabf4dfa4a29cfc0eb65021d58c7e6bf110f5d09": "Configurei Husky, Prettier e ESLint no projeto, além de atualizar diversos componentes de UI e as configurações gerais do sistema.",
+  "084a9f296b10c76393c23b33b78bffc1eaac76c1": "Implementei uma nova suíte de componentes de UI v1 e utilitários, incluindo campos diversos, inputs controlados, navegação e feedbacks visuais.",
+  "33eab6a955053d728c098799a5f2fa4124dbe024": "Realizei o commit inicial do projeto, configurando a estrutura base e os arquivos fundamentais para o início do desenvolvimento planejado."
+}
